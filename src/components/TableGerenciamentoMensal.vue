@@ -1,18 +1,18 @@
 <template>
-  <ModalDespesa
+  <ModalGerenciamento
     :value="abriModal"
-    @AoSalvarModal="adicionarDespesa"
+    @AoSalvarModal="adicionarAtividade"
     @alterar="(value) => (abriModal = value)"
-    :modalCadastroDepesa="abrirModalDepesa"
+    :modalCadastroDepesa="tabelaDespesa"
   />
 
   <q-table
     flat
     bordered
-    title="Treats"
-    :rows="despesas"
+    :rows="despesas ?? rendimentos"
     :columns="columns"
     row-key="id"
+    :pagination="{ rowsPerPage: 10 }"
     :filter="filter"
   >
     <template v-slot:top-left>
@@ -20,14 +20,8 @@
         <q-btn
           class=""
           color="primary"
-          label="Adicionar Rendimento"
-          @click="() => abrirModal(false)"
-        />
-        <q-btn
-          class=""
-          color="primary"
-          label="Adicionar Despesa"
-          @click="() => abrirModal()"
+          :label="tabelaDespesa ? 'Adicionar Despesa' : 'Adicionar Rendimento'"
+          @click="() => (abriModal = true)"
         />
       </section>
     </template>
@@ -50,19 +44,36 @@
     <template v-slot:body="props">
       <q-tr :props="props.cols" :key="props.row.id">
         <q-td key="tipo" :props="props">
-          <q-icon name="arrow_downward" color="red" size="xs" />
-          {{ obterNomeDespesa(props.row.idTipoDespesa) }}
+          <q-icon
+            :name="tabelaDespesa ? 'arrow_downward' : 'arrow_upward'"
+            :color="tabelaDespesa ? 'red' : 'green'"
+            size="xs"
+          />
+          {{ obterTipoAtividade(props.row) }}
         </q-td>
         <q-td key="tipo" :props="props">
           {{ props.row.descricao }}
         </q-td>
         <q-td key="tipo" :props="props">
-          {{
-            props.row.valor.toLocaleString('pt-br', {
-              style: 'currency',
-              currency: 'BRL',
-            })
-          }}
+          <ValorPadraoBR :valor="props.row.valor" />
+
+          <q-popup-edit
+            v-model.number="props.row.valor"
+            buttons
+            label-set="Salvar"
+            label-cancel="Fechar"
+            @save="(value) => alterarValor(props.row.id, value)"
+            v-slot="scope"
+          >
+            <q-input
+              type="number"
+              v-model.number="scope.value"
+              step="0.01"
+              dense
+              autofocus
+              @keyup.enter="scope.set"
+            />
+          </q-popup-edit>
         </q-td>
 
         <q-td key="tipo" :props="props">
@@ -71,7 +82,7 @@
             color="deep-orange"
             icon="delete"
             size="sm"
-            @click="() => excluirDespesa(props.row.id)"
+            @click="() => excluirAtividade(props.row.id)"
           />
         </q-td>
       </q-tr>
@@ -80,64 +91,113 @@
 </template>
 
 <script lang="ts">
-import { useDespesaStore } from 'src/stores/despesasStore';
-import IDespesa, { TipoDespesas } from 'src/interfaces/AtividadeMensal';
+import { useDespesaStore } from 'src/stores/gerenciamentoMensalStore';
+import IDespesa, { TipoDespesas } from 'src/interfaces/IDespesa';
 import { ref } from 'vue';
-import ModalDespesa from 'src/components/ModalCriacaoDespesa.vue';
+import ModalGerenciamento from 'src/components/ModalCriacaoDespesaERendimento.vue';
+import ValorPadraoBR from './ValorPadraoBR.vue';
+import IRendimento, { TipoRendimento } from 'src/interfaces/IRendimento';
 
-const columns: any[] = [
-  {
-    name: 'tipo',
-    required: true,
-    label: 'Tipo do Gasto',
-    align: 'left',
-    field: (row: any) => row.idTipoDespesa,
-    format: (val: any) => `${val}`,
-    sortable: false,
-  },
-  { name: 'descricao', label: 'Descricão', field: 'descricao', align: 'left' },
-  {
-    name: 'valor',
-    label: 'Valor',
-    field: 'valor',
-    align: 'left',
-    sortable: true,
-    sort: (a: any, b: any) => parseInt(a, 10) - parseInt(b, 10),
-  },
-  { name: '', label: '', field: '', align: 'left' },
-];
+export type tipoTablea = 'IRendimento' | 'Despesa';
 
 export default {
   name: 'TableGerenciamentoMensal ',
-  components: { ModalDespesa },
+  components: { ModalGerenciamento, ValorPadraoBR },
+  props: {
+    itemName: {
+      type: String,
+      required: true,
+    },
+    TableTipe: {
+      type: Object as () => tipoTablea,
+    },
+  },
   data() {
     return {
       filter: '',
       abriModal: false,
       abrirModalDepesa: true,
+      valorEdit: 0,
     };
   },
-  methods: {
-    excluirDespesa: function (id: number) {
-      this.despesaStore.removerDespesa(id);
-    },
-    obterNomeDespesa: function (id: number) {
-      return TipoDespesas.find((item) => item.id === id)?.label;
-    },
-    adicionarDespesa: function (despesa: IDespesa) {
-      this.despesaStore.adicionarDespesa(despesa);
-      this.abriModal = false;
-    },
-    abrirModal: function (ModalDespesa = true) {
-      this.abriModal = true;
-      this.abrirModalDepesa = ModalDespesa;
+  computed: {
+    tabelaDespesa: function () {
+      return this.TableTipe === 'Despesa';
     },
   },
-  setup() {
-    const despesaStore = useDespesaStore();
-    const despesas = ref(despesaStore.getDespesas);
+  methods: {
+    excluirAtividade: function (id: string) {
+      if (this.TableTipe === 'Despesa') {
+        this.despesaStore.removerDespesa(id);
+      } else {
+        this.despesaStore.removerRendimento(id);
+      }
+    },
+    obterTipoAtividade: function (row: any) {
+      if (this.TableTipe === 'Despesa') {
+        return TipoDespesas.find((item) => item.id === row.idTipoDespesa)
+          ?.label;
+      } else {
+        return TipoRendimento.find((item) => item.id === row.idTipoRendimento)
+          ?.label;
+      }
+    },
+    adicionarAtividade: function (item: IDespesa | IRendimento) {
+      if (this.tabelaDespesa) {
+        this.despesaStore.adicionarDespesa(item as IDespesa);
+      } else {
+        this.despesaStore.adicionarRendimento(item as IRendimento);
+      }
+      this.abriModal = false;
+    },
+    alterarValor: function (id: string, value: number) {
+      this.despesaStore.atualizarValor(
+        value,
+        id,
+        this.tabelaDespesa ? 'Despesa' : 'Rendimento'
+      );
+    },
+  },
+  setup(props) {
+    const columns: any[] = [
+      {
+        name: 'tipo',
+        required: true,
+        label:
+          props.TableTipe === 'Despesa'
+            ? 'Tipo do Gasto'
+            : 'Tipo do rendimento',
+        align: 'left',
+        field: (row: any) => row.idTipoDespesa,
+        format: (val: any) => `${val}`,
+        sortable: false,
+      },
+      {
+        name: 'descricao',
+        label: 'Descricão',
+        field: 'descricao',
+        align: 'left',
+      },
+      {
+        name: 'valor',
+        label: 'Valor',
+        field: 'valor',
+        align: 'left',
+        sortable: true,
+        sort: (a: any, b: any) => parseInt(a, 10) - parseInt(b, 10),
+      },
+      { name: '', label: '', field: '', align: 'left' },
+    ];
 
-    return { despesaStore, columns, despesas };
+    if (props.TableTipe === 'Despesa') {
+      const despesaStore = useDespesaStore();
+      const despesas = ref(despesaStore.getDespesas);
+      return { despesaStore, columns, despesas };
+    } else {
+      const despesaStore = useDespesaStore();
+      const rendimentos = ref(despesaStore.getRendimentos);
+      return { despesaStore, columns, rendimentos };
+    }
   },
 };
 </script>

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import IUser from 'src/interfaces/IUSer';
+import { toRaw } from 'vue';
 
 
 export const useUserStore = defineStore('userStore', {
@@ -7,46 +8,42 @@ export const useUserStore = defineStore('userStore', {
     User: {} as IUser,
   }),
   getters: {
-     obterUsuario: (state) => {
-        if(state.User == null || state.User == undefined || state.User.email === '') {
-            const userName = localStorage.getItem('userName')
-            const email = localStorage.getItem('email')
-    
-            state.User = {
-                email: email ?? '',
-                id: 1,
-                listaDespesas: [],
-                name: userName ?? '',
-            }
-        }
-
-        return state.User;
+    obterUsuario: (state) => {
+      state.User = obterUsuario()
+      return toRaw(state.User);
     },
   },
   actions: {
-    userLogado() {
-       const userName = localStorage.getItem('userName')
-       const email = localStorage.getItem('email')
+    logarUsuario(userName: string, email: string) {
 
-       if(userName && email){
-        return true;
-       }
-      return false;
-    },
-    logarUsuario(userName: string, email:string) {
+      this.User = obterUsuario(userName, email);
 
-        console.log(userName, email);
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('email', email);
+      localStorage.setItem('user', JSON.stringify(this.User));
 
-        localStorage.setItem('userName', userName);
-        localStorage.setItem('email', email);
-        
-        this.User = {
-            email: email,
-            id: 1,
-            listaDespesas: [],
-            name: userName,
-        }
-        return true;
+      return true;
     }
   },
 });
+
+
+function obterUsuario(userName?: string, email?: string): IUser {
+  const userPlataforma = localStorage.getItem('user');
+
+  if (userPlataforma) {
+    return JSON.parse(userPlataforma)
+  }
+  else {
+    return {
+      email: email!,
+      name: userName!,
+      idHash: new Date().toISOString(),
+      listaDespesas: [],
+      listaRendimentos: [],
+    }
+
+  }
+}
+
+

@@ -9,7 +9,7 @@
           outlined
           v-model="username"
           label-color="white"
-          label="User name"
+          label="Nome de usuario"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Campo obrigatorio']"
         />
@@ -19,7 +19,7 @@
           v-model="email"
           type="email"
           label-color="white"
-          label="Digite seu email"
+          label="E-mail"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Campo obrigatorio']"
         />
@@ -47,7 +47,7 @@ export default defineComponent({
   methods: {
     login: function () {
       if (this.userStore.logarUsuario(this.username, this.email)) {
-        this.router.push('/home');
+        this.router.push({ name: 'Home' });
       }
     },
   },
@@ -79,7 +79,7 @@ export default defineComponent({
 }
 
 .signup a {
-  color: rgba(243, 244, 246, 1);
+  color: rgb(199, 202, 207);
   text-decoration: none;
   font-size: 14px;
 }
@@ -92,10 +92,10 @@ export default defineComponent({
 .sign {
   display: block;
   width: 100%;
-  background-color: rgba(167, 139, 250, 1);
+  background-color: #29272e;
   padding: 0.75rem;
   text-align: center;
-  color: rgba(17, 24, 39, 1);
+  color: rgb(208, 210, 212);
   border: none;
   border-radius: 0.375rem;
   font-weight: 600;

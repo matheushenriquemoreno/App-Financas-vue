@@ -34,19 +34,17 @@
               :rules="[(val) => (val && val.length > 0) || 'Campo obrigatorio']"
             />
 
-            <q-select
-              filled
-              v-model="tipoSelecionado"
-              :options="modalCadastroDepesa ? TipoDespesas : TipoRendimento"
+            <CampoSelect
               :label="
                 modalCadastroDepesa ? 'Tipo da Despesa' : 'tipo do Rendimento'
               "
-              lazy-rules
-              :rules="[(val) => val || 'Campo obrigatorio']"
-              emit-value
-              map-options
+              :opcoes="modalCadastroDepesa ? TipoDespesas : TipoRendimento"
+              @ao-salvar="
+                (value) => {
+                  tipoSelecionado = value;
+                }
+              "
             />
-
             <q-card-actions class="text-primary">
               <q-btn flat label="Cancelar" v-close-popup />
               <q-btn flat label="Adicionar" type="submit" />
@@ -57,18 +55,18 @@
     </q-card>
   </q-dialog>
 </template>
-    
+
   <script lang="ts">
 import { defineComponent } from 'vue';
-import IDespesa, {
-  TipoDespesas,
-  TipoRendimento,
-  IRendimento,
-} from 'src/interfaces/AtividadeMensal';
+import IDespesa, { TipoDespesas } from 'src/interfaces/IDespesa';
+import IRendimento, { TipoRendimento } from 'src/interfaces/IRendimento';
+import { AtividadeMensal } from 'src/interfaces/AtividadeMensal';
+import CampoSelect from './CampoSelect.vue';
 
 export default defineComponent({
-  name: 'ModalDespesa',
+  name: 'ModalGerenciamento',
   emits: ['AoSalvarModal', 'alterar'],
+  components: { CampoSelect },
   props: {
     value: {
       type: Boolean,
@@ -91,15 +89,27 @@ export default defineComponent({
   },
   methods: {
     adicionarDespesa: function () {
-      const despesa: IDespesa = {
-        id: 1,
+      let atividadeMensal: AtividadeMensal = {
+        id: new Date().toISOString(),
+        idHashUser: '',
         descricao: this.descricao,
         valor: parseFloat(this.valor),
-        idTipoDespesa: parseInt(this.tipoSelecionado),
       };
 
-      this.$emit('AoSalvarModal', despesa);
+      if (this.modalCadastroDepesa) {
+        const depesa: IDespesa = {
+          ...atividadeMensal,
+          idTipoDespesa: parseInt(this.tipoSelecionado),
+        };
 
+        this.$emit('AoSalvarModal', depesa);
+      } else {
+        const rendimento: IRendimento = {
+          ...atividadeMensal,
+          idTipoRendimento: parseInt(this.tipoSelecionado),
+        };
+        this.$emit('AoSalvarModal', rendimento);
+      }
       this.descricao = '';
       this.valor = '';
       this.tipoSelecionado = '';

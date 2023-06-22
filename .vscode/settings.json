@@ -15,5 +15,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "[vue]": {
     "editor.defaultFormatter": "octref.vetur"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

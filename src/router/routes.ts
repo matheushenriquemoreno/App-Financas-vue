@@ -2,6 +2,10 @@ import { RouteRecordRaw } from 'vue-router';
 import LoginPage from 'src/pages/LoginUserPage.vue';
 
 
+import DespesaView from 'src/views/PageIndex/DespesaView.vue';
+import RecebimentosView from 'src/views/PageIndex/RecebimentosView.vue';
+
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/login',
@@ -10,10 +14,23 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '/home', component: () => import('pages/IndexPage.vue') }, { path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      {
+        path: '', name: 'Home', component: () => import('pages/IndexPage.vue'),
+        children: [
+          {
+            path: '',
+            component: RecebimentosView
+          },
+          {
+            path: 'Despesa',
+            component: DespesaView
+          },
+        ]
+      }],
   },
-  // Always leave this as last one,
-  // but you can also remove it
+
+
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),

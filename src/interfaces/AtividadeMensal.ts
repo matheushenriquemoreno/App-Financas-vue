@@ -1,3 +1,52 @@
+export interface AtividadeMensal{
+    id: string;
+    descricao: string;
+    valor: number;
+    idHashUser: string;
+}
+
+
+export class TipoAtividade{
+    id: number;
+    label: string;
+    value: number;
+    constructor(id: number, label: string){
+        this.id = id;
+        this.label = label; 
+        this.value = id;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // export enum TipoDespesa{
 //     Alimentacao = 1,
@@ -26,43 +75,3 @@
 // export const obterTipoDespesaSelect = () => { 
 //     return convertEnumToArray(TipoDespesa); 
 // }
-
-
-class TipoAtividade{
-    id: number;
-    label: string;
-    value: number;
-    constructor(id: number, label: string){
-        this.id = id;
-        this.label = label; 
-        this.value = id;
-    }
-}
-
-export const TipoDespesas: TipoAtividade[] = [
-    new TipoAtividade(1 ,'Alimentação'),
-    new TipoAtividade(2 ,'Gasolina'),
-    new TipoAtividade(3 ,'Cartão de Crédito'),
-    new TipoAtividade(4 ,'Livros'),
-    new TipoAtividade(5 ,'Estudos')
-]
-
-
-export const TipoRendimento: TipoAtividade[] = [
-    new TipoAtividade(1 ,'Salario'),
-    new TipoAtividade(1 ,'Renda extra'),
-]
-
-export interface AtividadeMensal{
-    id: number;
-    descricao: string;
-    valor: number;
-}
-
-export default interface IDespesa extends AtividadeMensal{
-    idTipoDespesa: number;
-}
-
-export interface IRendimento extends AtividadeMensal{
-    idTipoRendimento: number;
-}

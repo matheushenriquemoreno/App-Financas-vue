@@ -38,72 +38,77 @@
       </div>
     </div> -->
 
-    <div class="row col-12 justify-center q-gutter-xl shadow q-pa-md">
-      <q-input
-        class="col-xs-8 col-md-3 col-sm-3 col-xl-3 col"
-        v-model="user.salario"
-        label="Salario"
-        type="number"
-        step="0.01"
-        min="0"
-      >
-      </q-input>
-
-      <q-badge
-        color="red"
-        class="col-xs-8 col-md-3 col-sm-3 col-xl-3 justify-center gastos"
-      >
-        Despesa
-        {{
-          calcularValorDespesa.toLocaleString('pt-br', {
-            style: 'currency',
-            currency: 'BRL',
-          })
-        }}
-        <q-icon name="warning" color="white" class="q-ml-xs" />
-      </q-badge>
-
-      <q-badge
-        :color="calcularRestante < 0 ? 'orange' : 'teal'"
-        class="col-xs-8 col-md-3 col-sm-3 col-xl-3 justify-center gastos"
-      >
-        Restante
-        {{
-          calcularRestante.toLocaleString('pt-br', {
-            style: 'currency',
-            currency: 'BRL',
-          })
-        }}
-      </q-badge>
+    <div class="row justify-center q-gutter-xl shadow q-pa-md text-center">
+      <div class="col-md-3 col-sm-12 col-xl-3 justify-center">
+        <q-badge color="green" class="gastos justify-center">
+          Rendimento
+          <ValorPadraoBR :valor="calcularRendimentos" />
+        </q-badge>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xl-3">
+        <q-badge color="red" class="gastos justify-center">
+          Despesa
+          <ValorPadraoBR :valor="calcularValorDespesa" />
+          <q-icon name="warning" color="white" class="q-ml-xs" size="xs" />
+        </q-badge>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xl-3">
+        <q-badge
+          :color="calcularRestante < 0 ? 'orange' : 'teal'"
+          class="gastos justify-center"
+        >
+          Restante
+          <ValorPadraoBR :valor="calcularRestante" />
+          <q-icon
+            v-if="calcularRestante < 0"
+            name="warning"
+            color="red"
+            class="q-ml-xs"
+            size="xs"
+          />
+        </q-badge>
+      </div>
     </div>
 
-    <div class="q-pa-md">
-      <TableGerenciamentoMensal />
+    <div class="q-gutter-md">
+      <q-tabs
+        :v-model="''"
+        dense
+        align="center"
+        class="text-dark"
+        :breakpoint="0"
+      >
+        <q-route-tab name="Recebimentos" label="Recebimentos" to="/" />
+        <q-route-tab name="Despesas" label="Despesas" to="/Despesa" />
+      </q-tabs>
     </div>
+
+    <router-view></router-view>
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRaw } from 'vue';
-import IUser from 'src/interfaces/IUSer';
+import { defineComponent, ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { TipoDespesas } from 'src/interfaces/AtividadeMensal';
-import TableGerenciamentoMensal from 'src/components/TableGerenciamentoMensal.vue';
-import { useDespesaStore } from 'src/stores/despesasStore';
+import { TipoDespesas } from 'src/interfaces/IDespesa';
+import ValorPadraoBR from 'src/components/ValorPadraoBR.vue';
+
+import { useDespesaStore } from 'src/stores/gerenciamentoMensalStore';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: { TableGerenciamentoMensal },
+  components: {
+    ValorPadraoBR,
+  },
   data() {
     return {
-      user: {} as IUser,
       abriModal: false,
       filter: '',
     };
   },
 
   computed: {
-    calcularValorDespesa() {
+    calcularValorDespesa(): number {
       let valor = 0;
 
       for (const item of this.despesas) {
@@ -112,16 +117,25 @@ export default defineComponent({
       return valor;
     },
     calcularRestante(): number {
-      const salario = this.user.salario ?? 0;
+      const salario = this.calcularRendimentos ?? 0;
       return salario - this.calcularValorDespesa;
+    },
+    calcularRendimentos(): number {
+      let valor = 0;
+
+      for (const item of this.rendimentos) {
+        valor += item.valor;
+      }
+      return valor;
     },
   },
   setup() {
     const quasar = useQuasar();
     const despesaStore = useDespesaStore();
     const despesas = ref(despesaStore.getDespesas);
+    const rendimentos = ref(despesaStore.getRendimentos);
 
-    return { quasar, TipoDespesas, despesaStore, despesas };
+    return { quasar, TipoDespesas, despesaStore, despesas, rendimentos };
   },
 });
 </script>
