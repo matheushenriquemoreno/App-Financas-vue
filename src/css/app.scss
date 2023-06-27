@@ -1,19 +1,23 @@
-.gastos{
-    border-radius: 30px;
-    height: 60px;
+.gastos {
+  border-radius: 30px;
+  height: 60px;
+  width: 350px;
+}
+
+@media (max-width: 1250px) {
+  .gastos {
     width: 300px;
+  }
 }
 
-@media (max-width: 350px)
-{
-    .gastos {
-        width: 250px;
-    }
+@media (max-width: 350px) {
+  .gastos {
+    width: 240px;
+  }
 }
 
-@media (max-width: 250px)
-{
-    .gastos {
-        width: 200px;
-    }
+@media (max-width: 250px) {
+  .gastos {
+    width: 200px;
+  }
 }

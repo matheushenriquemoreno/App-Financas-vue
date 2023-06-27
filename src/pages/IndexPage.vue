@@ -38,21 +38,23 @@
       </div>
     </div> -->
 
-    <div class="row justify-center q-gutter-xl shadow q-pa-md text-center">
-      <div class="col-md-3 col-sm-12 col-xl-3 justify-center">
+    <div
+      class="row justify-center q-gutter-x-xl q-gutter-y-sm shadow q-pa-md text-center"
+    >
+      <div class="col-md-3 col-sm-5">
         <q-badge color="green" class="gastos justify-center">
           Rendimento
           <ValorPadraoBR :valor="calcularRendimentos" />
         </q-badge>
       </div>
-      <div class="col-md-3 col-sm-12 col-xl-3">
+      <div class="col-md-3 col-sm-5">
         <q-badge color="red" class="gastos justify-center">
           Despesa
           <ValorPadraoBR :valor="calcularValorDespesa" />
           <q-icon name="warning" color="white" class="q-ml-xs" size="xs" />
         </q-badge>
       </div>
-      <div class="col-md-3 col-sm-12 col-xl-3">
+      <div class="col-md-3 col-sm-6">
         <q-badge
           :color="calcularRestante < 0 ? 'orange' : 'teal'"
           class="gastos justify-center"
