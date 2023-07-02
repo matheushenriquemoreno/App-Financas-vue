@@ -38,6 +38,8 @@
               :label="
                 modalCadastroDepesa ? 'Tipo da Despesa' : 'tipo do Rendimento'
               "
+              :select-multiplo="false"
+              :modelValue="tipoSelecionado"
               :opcoes="modalCadastroDepesa ? TipoDespesas : TipoRendimento"
               @ao-salvar="
                 (value) => {
