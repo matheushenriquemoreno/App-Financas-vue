@@ -107,6 +107,57 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Application.dll": {}
+        }
+      },
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
+      },
+      "Infra.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Infra.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Infra.Data.dll": {}
+        }
+      },
+      "Infra.IOC/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Application": "1.0.0",
+          "Domain": "1.0.0",
+          "Infra.Data": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Infra.IOC.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Infra.IOC.dll": {}
+        }
       }
     }
   },
@@ -451,10 +502,31 @@
         "swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "Application/1.0.0": {
+      "type": "project",
+      "path": "../Application/Application.csproj",
+      "msbuildProject": "../Application/Application.csproj"
+    },
+    "Domain/1.0.0": {
+      "type": "project",
+      "path": "../Domain/Domain.csproj",
+      "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "Infra.Data/1.0.0": {
+      "type": "project",
+      "path": "../Infra-Data/Infra.Data.csproj",
+      "msbuildProject": "../Infra-Data/Infra.Data.csproj"
+    },
+    "Infra.IOC/1.0.0": {
+      "type": "project",
+      "path": "../Infra.IOC/Infra.IOC.csproj",
+      "msbuildProject": "../Infra.IOC/Infra.IOC.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "Infra.IOC >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 7.0.5",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
@@ -465,9 +537,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\FinancasPessoais.csproj",
-      "projectName": "FinancasPessoais",
-      "projectPath": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\FinancasPessoais.csproj",
+      "projectUniqueName": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\APIFinancas.csproj",
+      "projectName": "APIFinancas",
+      "projectPath": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\APIFinancas.csproj",
       "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\obj\\",
       "projectStyle": "PackageReference",
@@ -486,7 +558,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\Infra.IOC\\Infra.IOC.csproj": {
+              "projectPath": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\Infra.IOC\\Infra.IOC.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sFB/hZGEU6ijIY7G8h2/mTo1ZZ9fIbXG7bI2mbcYh1dphezeyOAzpWAg2Py3OE3LXh/aIlk4XC8+joTWtboXdA==",
+  "dgSpecHash": "N5bKuAFMc1m6Wc1IXsIW5WYe+5s0F3kU3hUOk6wJD0rSBzUv9RDrt7Ejt6SzQXnpQuWWcoMUoITUC5/HaK6u7Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\FinancasPessoais.csproj",
+  "projectFilePath": "C:\\Users\\mathe\\GitHub\\App-Financas-vue\\Back-End\\FinancasPessoais\\FinancasPessoais\\APIFinancas.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mathe\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.5\\microsoft.aspnetcore.openapi.7.0.5.nupkg.sha512",
     "C:\\Users\\mathe\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
