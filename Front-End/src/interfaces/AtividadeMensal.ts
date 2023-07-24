@@ -1,7 +1,7 @@
 export interface AtividadeMensal {
   id: string;
   descricao: string;
-  valor: number | string;
+  valor: number;
   idHashUser: string;
 }
 

@@ -64,7 +64,7 @@ export default {
       required: true,
     },
     modelValue: {
-      type: Object,
+      type: Object as PropType<any>,
       required: true,
     },
     selectMultiplo: {
@@ -87,7 +87,7 @@ export default {
           } else {
             const pesquisa = val.toLowerCase();
             options.value = props.opcoes.filter(
-              (v) => v.label.toLowerCase().indexOf(pesquisa) > -1
+              (opcao) => opcao.label.toLowerCase().indexOf(pesquisa) > -1
             );
           }
         });
