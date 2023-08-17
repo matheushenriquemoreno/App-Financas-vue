@@ -9,10 +9,10 @@
   <q-table
     flat
     bordered
-    :rows="despesas ?? rendimentos"
+    :rows="dados"
     :columns="columns"
     row-key="id"
-    :pagination="{ rowsPerPage: 10 }"
+    :pagination="initialPagination"
     :filter="filter"
   >
     <template v-slot:top-left>
@@ -189,15 +189,24 @@ export default {
       { name: '', label: '', field: '', align: 'left' },
     ];
 
+    const dados = ref();
+    const despesaStore = useDespesaStore();
     if (props.TableTipe === 'Despesa') {
-      const despesaStore = useDespesaStore();
-      const despesas = ref(despesaStore.getDespesas);
-      return { despesaStore, columns, despesas };
+      dados.value = despesaStore.getDespesas;
     } else {
-      const despesaStore = useDespesaStore();
-      const rendimentos = ref(despesaStore.getRendimentos);
-      return { despesaStore, columns, rendimentos };
+      dados.value = despesaStore.getRendimentos;
     }
+
+    return {
+      despesaStore,
+      columns,
+      dados,
+      initialPagination: {
+        sortBy: 'desc',
+        descending: false,
+        rowsPerPage: 10,
+      },
+    };
   },
 };
 </script>

@@ -21,7 +21,10 @@
           label-color="white"
           label="E-mail"
           lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Campo obrigatorio']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Campo obrigatorio',
+            'email',
+          ]"
         />
 
         <q-btn label="Entrar" type="submit" class="sign" />
@@ -47,7 +50,7 @@ export default defineComponent({
   methods: {
     login: function () {
       if (this.userStore.logarUsuario(this.username, this.email)) {
-        this.router.push({ name: 'Home' });
+        this.router.push({ name: 'recebimento' });
       }
     },
   },

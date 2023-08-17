@@ -37,7 +37,6 @@
         </q-tabs>
       </div>
     </div> -->
-
     <div
       class="row justify-center q-gutter-x-xl q-gutter-y-sm shadow q-pa-md text-center"
     >
@@ -82,6 +81,7 @@
       >
         <q-route-tab name="Recebimentos" label="Recebimentos" to="/" />
         <q-route-tab name="Despesas" label="Despesas" to="/Despesa" />
+        <q-route-tab name="Graficos" label="Graficos" to="/Acompanhamento" />
       </q-tabs>
     </div>
 
@@ -92,10 +92,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { TipoDespesas } from 'src/interfaces/IDespesa';
+import IDespesa, { TipoDespesas } from 'src/interfaces/IDespesa';
 import ValorPadraoBR from 'src/components/ValorPadraoBR.vue';
-
 import { useDespesaStore } from 'src/stores/gerenciamentoMensalStore';
+import IRendimento from 'src/interfaces/IRendimento';
 
 export default defineComponent({
   name: 'IndexPage',
@@ -106,17 +106,17 @@ export default defineComponent({
     return {
       abriModal: false,
       filter: '',
+      despesas: [] as Array<IDespesa>,
+      rendimentos: [] as Array<IRendimento>,
     };
   },
-
   computed: {
     calcularValorDespesa(): number {
-      let valor = 0;
-
-      for (const item of this.despesas) {
-        valor += item.valor;
-      }
-      return valor;
+      return this.despesas
+        .map((x) => x.valor)
+        .reduce((acumulador, valorAtual) => {
+          return acumulador + valorAtual;
+        }, 0);
     },
     calcularRestante(): number {
       const salario = this.calcularRendimentos ?? 0;
@@ -131,13 +131,16 @@ export default defineComponent({
       return valor;
     },
   },
-  setup() {
+  async created() {
+    console.log('');
+    this.despesas = this.despesaStore.getDespesas;
+    this.rendimentos = this.despesaStore.getRendimentos;
+  },
+  setup(props) {
     const quasar = useQuasar();
     const despesaStore = useDespesaStore();
-    const despesas = ref(despesaStore.getDespesas);
-    const rendimentos = ref(despesaStore.getRendimentos);
 
-    return { quasar, TipoDespesas, despesaStore, despesas, rendimentos };
+    return { quasar, TipoDespesas, despesaStore };
   },
 });
 </script>
