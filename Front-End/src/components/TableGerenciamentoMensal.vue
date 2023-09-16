@@ -63,6 +63,7 @@
             label-set="Salvar"
             label-cancel="Fechar"
             @save="(value) => alterarValor(props.row.id, value)"
+            :validate="(val) => val !== ''"
             v-slot="scope"
           >
             <q-input
@@ -71,6 +72,7 @@
               step="0.01"
               dense
               autofocus
+              :rules="[(val) => scope.validate(val) || 'Dite um valor valido!']"
               @keyup.enter="scope.set"
             />
           </q-popup-edit>

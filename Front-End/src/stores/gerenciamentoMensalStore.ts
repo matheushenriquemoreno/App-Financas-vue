@@ -49,6 +49,10 @@ export const useDespesaStore = defineStore('despesaStore', {
       serviceUser().atualizarRendimento(this.rendimentos);
     },
     atualizarValor(valor: number, id: string, type: 'Despesa' | 'Rendimento') {
+      if (valor === undefined || valor === null) {
+        valor = 0;
+      }
+
       if (type === 'Despesa') {
         const index = this.despesas.findIndex(despesa => id === despesa.id);
         this.despesas[index].valor = valor;
