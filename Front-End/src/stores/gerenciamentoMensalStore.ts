@@ -63,6 +63,22 @@ export const useDespesaStore = defineStore('despesaStore', {
         this.rendimentos[index].valor = valor;
         serviceUser().atualizarRendimento(this.rendimentos);
       }
+    },
+    atualizarDescricao(id: string, descricao: string, type: 'Despesa' | 'Rendimento') {
+
+      if (type === 'Despesa') {
+        const index = this.despesas.findIndex(despesa => id === despesa.id);
+        this.despesas[index].descricao = descricao;
+        serviceUser().atualizarDepesas(this.despesas);
+      }
+      else {
+        const index = this.rendimentos.findIndex(rendimento => id === rendimento.id);
+        this.rendimentos[index].descricao = descricao;
+        serviceUser().atualizarRendimento(this.rendimentos);
+      }
     }
+
+
+
   },
 });

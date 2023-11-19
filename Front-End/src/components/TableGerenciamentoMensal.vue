@@ -50,9 +50,49 @@
             size="xs"
           />
           {{ obterTipoAtividade(props.row) }}
+
+          <q-popup-edit
+            v-model="props.row.idTipoDespesa"
+            buttons
+            label-set="Salvar"
+            label-cancel="Fechar"
+            :validate="(val) => val !== ''"
+            v-slot="scope"
+            @save="(opcao) => console.log(opcao)"
+          >
+            <q-select
+              dense
+              autofocus
+              v-model="scope.value"
+              :options="tabelaDespesa ? TipoDespesas : TipoRendimento"
+              label="Standard"
+              @keyup.enter="scope.set"
+              :rules="[(val) => scope.validate(val) || 'Dite um valor valido!']"
+              emit-value
+              map-options
+            />
+          </q-popup-edit>
         </q-td>
         <q-td key="tipo" :props="props">
           {{ props.row.descricao }}
+
+          <q-popup-edit
+            v-model="props.row.descricao"
+            buttons
+            label-set="Salvar"
+            label-cancel="Fechar"
+            :validate="(val) => val !== ''"
+            @save="(value) => alterarDescricao(props.row.id, value)"
+            v-slot="scope"
+          >
+            <q-input
+              v-model.trim="scope.value"
+              dense
+              autofocus
+              :rules="[(val) => scope.validate(val) || 'Dite um valor valido!']"
+              @keyup.enter="scope.set"
+            />
+          </q-popup-edit>
         </q-td>
         <q-td key="tipo" :props="props">
           <ValorPadraoBR :valor="props.row.valor" />
@@ -159,6 +199,13 @@ export default {
         this.tabelaDespesa ? 'Despesa' : 'Rendimento'
       );
     },
+    alterarDescricao: function (id: string, descricaoNova: string) {
+      this.despesaStore.atualizarDescricao(
+        id,
+        descricaoNova,
+        this.tabelaDespesa ? 'Despesa' : 'Rendimento'
+      );
+    },
   },
   setup(props) {
     const columns: any[] = [
@@ -203,6 +250,8 @@ export default {
       despesaStore,
       columns,
       dados,
+      TipoDespesas,
+      TipoRendimento,
       initialPagination: {
         sortBy: 'desc',
         descending: false,

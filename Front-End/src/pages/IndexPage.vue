@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useQuasar } from 'quasar';
 import IDespesa, { TipoDespesas } from 'src/interfaces/IDespesa';
 import ValorPadraoBR from 'src/components/ValorPadraoBR.vue';
@@ -136,7 +136,7 @@ export default defineComponent({
     this.despesas = this.despesaStore.getDespesas;
     this.rendimentos = this.despesaStore.getRendimentos;
   },
-  setup(props) {
+  setup() {
     const quasar = useQuasar();
     const despesaStore = useDespesaStore();
 

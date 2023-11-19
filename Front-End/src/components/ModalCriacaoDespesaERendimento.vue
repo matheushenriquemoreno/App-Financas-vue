@@ -101,27 +101,27 @@ export default defineComponent({
       if (this.modalCadastroDepesa) {
         const depesa: IDespesa = {
           ...atividadeMensal,
-          idTipoDespesa: parseInt(this.tipoSelecionado),
+          idTipoDespesa: parseInt(this.tipoSelecionado!),
         };
 
         this.$emit('AoSalvarModal', depesa);
       } else {
         const rendimento: IRendimento = {
           ...atividadeMensal,
-          idTipoRendimento: parseInt(this.tipoSelecionado),
+          idTipoRendimento: parseInt(this.tipoSelecionado!),
         };
         this.$emit('AoSalvarModal', rendimento);
       }
       this.descricao = '';
       this.valor = '';
-      this.tipoSelecionado = '';
+      this.tipoSelecionado = null;
     },
   },
   data() {
     return {
       descricao: '',
       valor: '',
-      tipoSelecionado: '',
+      tipoSelecionado: null,
     };
   },
   setup() {
