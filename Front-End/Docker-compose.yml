@@ -1,12 +1,13 @@
 # for local development
 version: '3.7'
+
 services:
-  quasar:
+  laravel:
     build:
       context: .
-      target: 'develop-stage'
+      dockerfile: Dockerfile
+    image: matheushenrique35/app-financas
+    container_name: appfinancas
     ports:
-      - '8080:8080'
-    volumes:
-      - '.:/app'
-    command: /bin/sh -c "yarn && quasar dev"
+      - '8070:80'
+
