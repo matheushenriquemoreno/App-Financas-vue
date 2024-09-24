@@ -1,0 +1,15 @@
+version: '3.9'
+
+
+services:
+  apiFinancas:
+    image: matheushenrique35/appfinancas
+    container_name: appfinancas.Api
+    build:
+      context: .
+      dockerfile: /WebApi/Dockerfile
+    restart: always
+    ports:
+      - 7070:8080
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"  
