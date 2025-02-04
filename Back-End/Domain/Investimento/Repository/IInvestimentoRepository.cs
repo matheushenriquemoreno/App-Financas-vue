@@ -7,6 +7,6 @@ using Domain.Entity;
 
 namespace Domain.Repository;
 
-public interface IInvestimentoRepository : IRepository<Investimento>
+public interface IInvestimentoRepository : IRepositoryBase<Investimento>
 {
 }

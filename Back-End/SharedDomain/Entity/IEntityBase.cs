@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Entity;
 
-namespace Domain.Repository;
+namespace SharedDomain.Entity;
 
-public interface IRendimentoRepository : IRepositoryBase<Rendimento>
+public interface IEntityBase
 {
+    string Id { get; set; }
 }

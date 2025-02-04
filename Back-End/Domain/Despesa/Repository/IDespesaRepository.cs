@@ -2,6 +2,6 @@
 
 namespace Domain.Repository;
 
-public interface IDespesaRepository : IRepository<Despesa>
+public interface IDespesaRepository : IRepositoryBase<Despesa>
 {
 }

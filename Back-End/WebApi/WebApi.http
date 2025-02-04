@@ -1,6 +1,9 @@
-@WebApi_HostAddress = http://localhost:5090
+@WebApi_HostAddress = https://localhost:7171
 
-GET {{WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{WebApi_HostAddress}}/api/Categorias/67a001af2e47683dcd54d56c
+
+
+
 
 ###
+
