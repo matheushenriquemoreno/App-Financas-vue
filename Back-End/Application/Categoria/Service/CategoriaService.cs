@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Domain.Entity;
 using Domain.Enum;
 using Domain.Repository;
+using SharedDomain.Exceptions;
 
 namespace Application.Implementacoes
 {
@@ -15,16 +16,19 @@ namespace Application.Implementacoes
             _categoriaRepository = categoriaRepository;
         }
 
-        public async Task<Result<ResultCategoriaDTO>> Adicionar(CreateUpdateCategoriaDTO entity)
+        public async Task<Result<ResultCategoriaDTO>> Adicionar(CreateCategoriaDTO categoriaDTO)
         {
-            var categoria = entity.Mapear();
+            if (_categoriaRepository.CategoriaJaExiste(categoriaDTO.Nome, categoriaDTO.Tipo))
+                return Result.Failure<ResultCategoriaDTO>(Error.Validation("Não e possivel criar categorias duplicadas!"));
+
+            var categoria = categoriaDTO.Mapear();
 
             categoria = await _categoriaRepository.Add(categoria);
 
             return Result.Success(ResultCategoriaDTO.Mapear(categoria));
         }
 
-        public async Task<Result<ResultCategoriaDTO>> Atualizar(CreateUpdateCategoriaDTO entity)
+        public async Task<Result<ResultCategoriaDTO>> Atualizar(UpdateCategoriaDTO entity)
         {
             var categoria = await _categoriaRepository.GetByID(entity.Id);
 
@@ -32,7 +36,6 @@ namespace Application.Implementacoes
                 return Result.Failure<ResultCategoriaDTO>(Error.NotFound("Categoria informada não existe!"));
 
             categoria.Nome = entity.Nome;
-            categoria.Tipo = entity.Tipo;
 
             await _categoriaRepository.Update(categoria);
 

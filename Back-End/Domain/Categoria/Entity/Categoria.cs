@@ -1,7 +1,5 @@
-﻿using System.Numerics;
-using Domain.Enum;
+﻿using Domain.Enum;
 using Domain.Validator;
-using SharedDomain.Entity;
 
 namespace Domain.Entity;
 

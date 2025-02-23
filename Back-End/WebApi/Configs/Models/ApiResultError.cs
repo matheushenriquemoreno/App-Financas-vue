@@ -1,4 +1,4 @@
-﻿namespace WebApi;
+﻿namespace WebApi.Configs.Models;
 
 public class ApiResultError
 {
@@ -6,12 +6,12 @@ public class ApiResultError
 
     protected ApiResultError(string message)
     {
-        this.Errors.Add(message);
+        Errors.Add(message);
     }
 
     protected ApiResultError(List<string> erros)
     {
-        this.Errors.AddRange(erros);
+        Errors.AddRange(erros);
     }
     public void AddErro(string message)
     {

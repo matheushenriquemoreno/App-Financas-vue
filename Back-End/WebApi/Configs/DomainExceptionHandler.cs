@@ -1,6 +1,7 @@
 ﻿using Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Configs.Models;
 
 namespace WebApi.Configs
 {
@@ -15,7 +16,7 @@ namespace WebApi.Configs
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            if (exception is not DomainValidatorException notFoundException)
+            if (exception is not DomainValidatorException)
             {
                 return false;
             }

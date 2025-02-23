@@ -5,10 +5,10 @@ using Domain.Enum;
 
 namespace Application.DTOs;
 
-public class CreateUpdateCategoriaDTO : ICreateDTO<Categoria>
+public class CreateCategoriaDTO : ICreateDTO<Categoria>
 {
-    public string? Id { get; set; }
     public string Nome { get; set; }
+
     [EnumDataType(typeof(TipoCategoria), ErrorMessage = "Valor informado para Tipo da categoria invalido!")]
     public TipoCategoria Tipo { get; set; }
 

@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Scalar.AspNetCore;
 using Microsoft.Extensions.Logging.Console;
 using WebApi.Configs;
+using WebApi.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Logging.AddConsole(x => x.FormatterName = ConsoleFormatterNames.Json);
 
 builder.Services.AddOpenApi();
 
-builder.Services.RegistrarDepencias();
+builder.Services.RegistrarDependencias();
 
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -38,8 +39,20 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
-app.MapGroup("/api/Categorias")
-      .MapRotasCategoria()
-      .WithTags("Categorias");
+app.MapCategoriaEndpoints()
+      .WithTags("Categorias")
+      .WithOpenApi();
+
+app.MapRendimentoEndpoints()
+      .WithTags("Rendimentos")
+      .WithOpenApi();
+
+app.MapDespesaEndpoints()
+      .WithTags("Despesas")
+      .WithOpenApi();
+
+app.MapInvestimentoEndpoints()
+    .WithTags("Investimentos")
+    .WithOpenApi();
 
 app.Run();

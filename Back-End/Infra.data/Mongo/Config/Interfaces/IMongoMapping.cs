@@ -1,4 +1,4 @@
-﻿namespace Infra.Data.Mongo.Mappings.Interface;
+﻿namespace Infra.Data.Mongo.Config.Interface;
 
 public interface IMongoMapping
 {

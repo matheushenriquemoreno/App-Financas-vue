@@ -1,18 +1,18 @@
 ﻿using System.Reflection;
-using Infra.Data.Mongo;
+using Infra.Data.Mongo.Config;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.IOC;
 
-public static class Register
+public static class Setup
 {
-    public static IServiceCollection RegistrarDepencias(this IServiceCollection services)
+    public static IServiceCollection RegistrarDependencias(this IServiceCollection services)
     {
         services.RegisterApplication(Assembly.Load("Application"));
 
         services.RegisterRepository(assemblyInterfaces: Assembly.Load("Domain"), assemblyImplementations: Assembly.Load("Infra.Data"));
 
-        services.MappingAllClassMongo();
+        services.ConfiguarMongoDB();
 
         return services;
     }

@@ -1,4 +1,4 @@
-﻿namespace Infra.Data.Mongo;
+﻿namespace Infra.Data.Mongo.Config;
 
 internal class MongoDBSettings
 {

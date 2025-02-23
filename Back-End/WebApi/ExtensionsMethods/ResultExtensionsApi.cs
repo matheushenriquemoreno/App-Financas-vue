@@ -1,4 +1,6 @@
-﻿namespace WebApi;
+﻿using WebApi.Configs.Models;
+
+namespace WebApi;
 
 public static class ResultExtensionsApi
 {

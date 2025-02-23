@@ -1,15 +1,19 @@
-version: '3.9'
-
+version: '3'
 
 services:
-  apiFinancas:
-    image: matheushenrique35/appfinancas
-    container_name: appfinancas.Api
-    build:
-      context: .
-      dockerfile: /WebApi/Dockerfile
-    restart: always
-    ports:
-      - 7070:8080
+
+  mongo:
+    container_name: mongodb
+    image: mongo
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"  
+      MONGO_INITDB_DATABASE: my_db
+      MONGO_INITDB_ROOT_USERNAME: teste
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbvolume:/data/db
+
+volumes:
+  mongodbvolume:
+    driver: local

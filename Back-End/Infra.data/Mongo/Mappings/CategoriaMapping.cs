@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entity;
-using Infra.Data.Mongo.Mappings.Interface;
+using Infra.Data.Mongo.Config.Interface;
 using MongoDB.Bson.Serialization;
 
 namespace Infra.Data.Mongo.Mappings;

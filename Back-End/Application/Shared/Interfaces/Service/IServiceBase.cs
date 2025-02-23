@@ -1,11 +1,16 @@
-﻿using Domain.Entity;
+﻿using Application.DTOs;
+using Domain.Entity;
 
 namespace Application.Shared.Interfaces.Service;
 
-public interface IServiceBase<T> where T : EntityBase
+public interface IServiceBase<TEntity, TCreateDTO, TUpdateDTO, TResultDTO> 
+    where TEntity : EntityBase
+    where TCreateDTO : class
+    where TUpdateDTO : class
+    where TResultDTO : class
 {
-    Task<Result<T>> Adicionar(T entity);
-    Task<Result<T>> Atualizar(T entity);
-    Result Excluir(T entity);
-    Task<Result<T>> ObterPeloID(string id);
+    Task<Result<TResultDTO>> Adicionar(TCreateDTO createDTO);
+    Task<Result<TResultDTO>> Atualizar(TUpdateDTO updateDTO);
+    Task<Result> Excluir(string id);
+    Task<Result<TResultDTO>> ObterPeloID(string id);
 }

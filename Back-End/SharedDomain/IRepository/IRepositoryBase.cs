@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using System.Linq.Expressions;
+using Domain.Entity;
 using SharedDomain.Entity;
 
 namespace Domain;
@@ -9,5 +10,6 @@ public interface IRepositoryBase<T> where T : IEntityBase
     Task<T> Update(T entity);
     Task Delete(T entity);
     Task<T> GetByID(string id);
+    Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> filtro);
 }
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Entity;
-using Infra.Data.Mongo.Mappings.Interface;
+using Infra.Data.Mongo.Config.Interface;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;

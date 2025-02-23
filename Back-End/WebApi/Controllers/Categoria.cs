@@ -5,44 +5,47 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controlles;
 
-public static class CategoriaRoutes
+public static class Categoria
 {
-    public static RouteGroupBuilder MapRotasCategoria(this RouteGroupBuilder group)
+    public static RouteGroupBuilder MapCategoriaEndpoints(this IEndpointRouteBuilder enpointRouteBuilder)
     {
+        var group = enpointRouteBuilder.MapGroup("/api/Categorias");
+
+
         group.MapGet("/{id:length(24)}", async (string id, ICategoriaService service) =>
         {
             var result = await service.ObterPeloID(id);
 
             return result.MapResult();
-        }).WithOpenApi();
+        });
 
         group.MapGet("/", async ([FromQuery] TipoCategoria tipoCategoria, ICategoriaService service) =>
         {
             var result = await service.ObterCategoriaPeloTipo(tipoCategoria);
 
             return result.MapResult();
-        }).WithOpenApi();
+        });
 
-        group.MapPost("/", async (CreateUpdateCategoriaDTO categoriadto, ICategoriaService service) =>
+        group.MapPost("/", async (CreateCategoriaDTO categoriadto, ICategoriaService service) =>
         {
             var result = await service.Adicionar(categoriadto);
 
             return result.MapResultCreated();
-        }).WithOpenApi();
+        });
 
-        group.MapPut("/", async ([FromBody] CreateUpdateCategoriaDTO categoriadto, ICategoriaService service) =>
+        group.MapPut("/", async (UpdateCategoriaDTO categoriadto, ICategoriaService service) =>
         {
             var result = await service.Atualizar(categoriadto);
 
             return result.MapResult();
-        }).WithOpenApi();
+        });
 
         group.MapDelete("/{id:length(24)}", async (string id, ICategoriaService service) =>
         {
             var result = await service.Excluir(id);
 
             return result.MapResult();
-        }).WithOpenApi();
+        });
 
         return group;
     }

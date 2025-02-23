@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
-using Infra.Data.Mongo.Mappings.Interface;
+using Infra.Data.Mongo.Config.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace Infra.Data.Mongo;
+namespace Infra.Data.Mongo.Config;
 
 public static class MongoConfig
 {
-    public static void MappingAllClassMongo(this IServiceCollection services)
+    private static void MappingAllClassMongo(this IServiceCollection services)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
@@ -21,10 +21,12 @@ public static class MongoConfig
         }
     }
 
-    public static IMongoCollection<T> GetCollection<T>(string collectionName)
+    public static void ConfiguarMongoDB(this IServiceCollection services)
     {
-        var mongoClient = new MongoClient(MongoDBSettings.ConnectionString);
-        var mongoDatabase = mongoClient.GetDatabase(MongoDBSettings.DataBaseName);
-        return mongoDatabase.GetCollection<T>(collectionName);
+        services.MappingAllClassMongo();
+
+        services.AddSingleton<IMongoClient>(s =>
+            new MongoClient(MongoDBSettings.ConnectionString)
+        );
     }
 }

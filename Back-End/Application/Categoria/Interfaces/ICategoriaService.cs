@@ -5,12 +5,9 @@ using Domain.Enum;
 
 namespace Application.Interfaces
 {
-    public interface ICategoriaService
+    public interface ICategoriaService : 
+        IServiceBase<Categoria, CreateCategoriaDTO, UpdateCategoriaDTO, ResultCategoriaDTO>
     {
-        Task<Result<ResultCategoriaDTO>> Adicionar(CreateUpdateCategoriaDTO entity);
-        Task<Result<ResultCategoriaDTO>> Atualizar(CreateUpdateCategoriaDTO entity);
-        Task<Result> Excluir(string id);
-        Task<Result<ResultCategoriaDTO>> ObterPeloID(string id);
         Task<Result<List<ResultCategoriaDTO>>> ObterCategoriaPeloTipo(TipoCategoria tipoCategoria);
     }
 }

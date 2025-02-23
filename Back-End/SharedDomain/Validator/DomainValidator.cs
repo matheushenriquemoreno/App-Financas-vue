@@ -16,7 +16,7 @@ public class DomainValidator
 
 
     /// <summary>
-    /// função para validar registros, função espera que a função retorne true em caso de uma validação de erro e false para sucesso.
+    /// função para validar registros, função espera que retorne true em caso de uma validação de erro e false para sucesso.
     /// </summary>
     /// <param name="validar">função que espera um retorno true ou false, true caso possui erro, e false caso não</param>
     /// <param name="mensagemErro"></param>
@@ -38,7 +38,7 @@ public class DomainValidator
 
     public void LancarExceptionSePossuiErro()
     {
-        if(PossuiErro())
+        if (PossuiErro())
             throw new DomainValidatorException(this.erros);
     }
 }

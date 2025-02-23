@@ -9,6 +9,7 @@ public class ResultCategoriaDTO
 {
     public string Id { get; set; }
     public string Nome { get; set; }
+
     public TipoCategoria Tipo { get; set; }
 
     public static ResultCategoriaDTO Mapear(Categoria entity)
