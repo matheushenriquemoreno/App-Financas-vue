@@ -21,7 +21,7 @@ public class Categoria : EntityBase
 
     private void ValidarDados()
     {
-        var validator = DomainValidator.Intanciar();
+        var validator = DomainValidator.Create();
 
         validator.Validar(() => string.IsNullOrEmpty(this.Nome), "Nome categoria obrigatorio!");
         validator.Validar(() => !System.Enum.IsDefined(typeof(TipoCategoria), this.Tipo), "Categoria informada invalida!");

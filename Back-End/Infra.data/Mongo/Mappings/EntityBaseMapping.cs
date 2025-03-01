@@ -4,12 +4,13 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 
 namespace Infra.Data.Mongo.Mappings;
 
 public class EntityBaseMapping : IMongoMapping
 {
-    public void RegisterMap()
+    public void RegisterMap(IMongoClient mongoClient)
     {
         BsonClassMap.TryRegisterClassMap<EntityBase>(cm =>
         {

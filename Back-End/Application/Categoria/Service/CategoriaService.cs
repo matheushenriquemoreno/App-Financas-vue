@@ -18,7 +18,7 @@ namespace Application.Implementacoes
 
         public async Task<Result<ResultCategoriaDTO>> Adicionar(CreateCategoriaDTO categoriaDTO)
         {
-            if (_categoriaRepository.CategoriaJaExiste(categoriaDTO.Nome, categoriaDTO.Tipo))
+            if (_categoriaRepository.CategoriaJaExiste(categoriaDTO.Nome, categoriaDTO.Tipo.Value))
                 return Result.Failure<ResultCategoriaDTO>(Error.Validation("Não e possivel criar categorias duplicadas!"));
 
             var categoria = categoriaDTO.Mapear();

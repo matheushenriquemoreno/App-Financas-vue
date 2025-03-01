@@ -13,10 +13,11 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+
+//builder.Services.Configure<JsonOptions>(options =>
+//{
+//    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+//});
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole(x => x.FormatterName = ConsoleFormatterNames.Json);

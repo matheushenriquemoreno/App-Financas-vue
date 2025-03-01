@@ -23,5 +23,6 @@ public class Result
     public static Result<TValue> Success<TValue>(TValue value) => new Result<TValue>(value, true);
 
     public static Result Failure(Error erro) => new Result(false, erro);
+    public static Result Failure() => new Result(false, default);
     public static Result<TValue> Failure<TValue>(Error error) => new Result<TValue>(default, false, error);
 }

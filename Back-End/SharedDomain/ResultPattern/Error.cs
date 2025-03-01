@@ -22,8 +22,10 @@ public class Error
 
     public static Error NotFound(string message) =>
         new Error(message, TypeError.NotFound);
-}
 
+    public static Error Exception(Exception ex) =>
+            new Error($"{ex}, {ex.InnerException}", TypeError.NotFound);
+}
 
 public enum TypeError
 {
@@ -32,4 +34,7 @@ public enum TypeError
 
     // Erros voltados a não existencia de um registro
     NotFound = 2,
+
+    // Erro para quando uma Exception for lancada
+    Exception = 3,
 }

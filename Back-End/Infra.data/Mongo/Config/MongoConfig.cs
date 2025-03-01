@@ -7,7 +7,7 @@ namespace Infra.Data.Mongo.Config;
 
 public static class MongoConfig
 {
-    private static void MappingAllClassMongo(this IServiceCollection services)
+    private static void MappingAllClassMongo(this IServiceCollection services, IMongoClient mongoClient)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
@@ -17,16 +17,16 @@ public static class MongoConfig
         foreach (var mapping in classesMapeadoras)
         {
             var instancia = Activator.CreateInstance(mapping) as IMongoMapping;
-            instancia?.RegisterMap();
+            instancia?.RegisterMap(mongoClient);
         }
     }
 
     public static void ConfiguarMongoDB(this IServiceCollection services)
     {
-        services.MappingAllClassMongo();
+        IMongoClient mongoClient = new MongoClient(MongoDBSettings.ConnectionString);
 
-        services.AddSingleton<IMongoClient>(s =>
-            new MongoClient(MongoDBSettings.ConnectionString)
-        );
+        services.AddSingleton(mongoClient);
+
+        services.MappingAllClassMongo(mongoClient);
     }
 }

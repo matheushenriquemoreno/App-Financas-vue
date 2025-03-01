@@ -4,14 +4,14 @@ namespace Domain.Validator;
 
 public class DomainValidator
 {
-    private List<string> erros;
+    private readonly List<string> _erros;
 
     public DomainValidator()
     {
-        erros = new List<string>();
+        _erros = new List<string>();
     }
 
-    public static DomainValidator Intanciar()
+    public static DomainValidator Create()
      => new DomainValidator();
 
 
@@ -23,23 +23,18 @@ public class DomainValidator
     public void Validar(Func<bool> validar, string mensagemErro)
     {
         if (validar())
-            erros.Add(mensagemErro);
+            _erros.Add(mensagemErro);
     }
 
     public bool PossuiErro()
     {
-        return erros.Count > 0;
-    }
-
-    public List<string> ObterErros()
-    {
-        return erros;
+        return _erros.Count > 0;
     }
 
     public void LancarExceptionSePossuiErro()
     {
         if (PossuiErro())
-            throw new DomainValidatorException(this.erros);
+            throw new DomainValidatorException(this._erros);
     }
 }
 

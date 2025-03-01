@@ -37,7 +37,7 @@ public abstract class Transacao : EntityBase
 
     private void ValidarDados()
     {
-        var validator = DomainValidator.Intanciar();
+        var validator = DomainValidator.Create();
 
         validator.Validar(() => this.Valor < 0, "Não se pode adicionar uma transação negativa.");
         validator.Validar(() => this.Ano < DateTime.Now.Year - 5, "Ano informado invalido.");
