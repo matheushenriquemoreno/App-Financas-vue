@@ -1,5 +1,6 @@
 ﻿using Application.Email.Interfaces;
 using Application.Login.DTOs;
+using Application.Login.Interfaces;
 using Domain.Entity;
 using Domain.Event;
 using Domain.Login.Entity;
@@ -8,17 +9,19 @@ using Domain.Repository;
 
 namespace Application.Login.Services;
 
-public class ServiceLogin
+public class LoginService : ILoginService
 {
     private readonly ICodigoLoginRepository _codigoLoginRepository;
     private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IEmailService _emailService;
+    private readonly IUsuarioEmailService _emailService;
+    private readonly IServiceJWT _serviceJWT;
 
-    public ServiceLogin(ICodigoLoginRepository codigoLoginRepository, IEmailService emailService, IUsuarioRepository usuarioRepository)
+    public LoginService(ICodigoLoginRepository codigoLoginRepository, IUsuarioEmailService emailService, IUsuarioRepository usuarioRepository, IServiceJWT serviceJWT)
     {
         _codigoLoginRepository = codigoLoginRepository;
         _emailService = emailService;
         _usuarioRepository = usuarioRepository;
+        _serviceJWT = serviceJWT;
     }
 
     public async Task<Result> Login(LoginDTO login)
@@ -32,10 +35,9 @@ public class ServiceLogin
             if (usuario == null)
             {
                 usuario = new Usuario(login.Nome, login.Email);
+
                 await _usuarioRepository.Add(usuario);
 
-                // criar uma classe que vai armazenar esses eventos, e logo apos a finalização via middlare ja fazer o disparo, ou deixar um 
-                // job que executa a cada segundo fazendo os disparos
                 usuarioCriadoEvent = new UsuarioCriadoEvent(usuario);
             }
 
@@ -43,9 +45,9 @@ public class ServiceLogin
 
             await _codigoLoginRepository.Add(codigo);
 
-            var emailEnviadoComSucesso = await _emailService.EnviarEmailLogin(usuarioCriadoEvent != null, usuario.Email, codigo);
+            Result resultEmailEnviado = await _emailService.EnviarEmailParaLogin(usuarioCriadoEvent != null, usuario.Email, codigo);
 
-            if (emailEnviadoComSucesso)
+            if (resultEmailEnviado.IsSucess)
             {
                 return Result.Success();
             }
@@ -69,35 +71,28 @@ public class ServiceLogin
             CodigoLogin codigoLogin = await _codigoLoginRepository.GetByCodigo(codigoLoginDTO.Codigo);
 
             if (codigoLogin == null)
-                return Result.Failure<ResultLoginDTO>(Error.NotFound("Codigo login informado inexistente!"));
+                return Result.Failure<ResultLoginDTO>(Error.NotFound("Codigo informado invalido!"));
 
             if (codigoLogin.EstaExpirado())
             {
-                await _codigoLoginRepository.Delete(codigoLogin);
-                return Result.Failure<ResultLoginDTO>(Error.NotFound("Codigo login informado expirado!"));
+                await _codigoLoginRepository.DeleteExpirados(codigoLogin.Email);
+                return Result.Failure<ResultLoginDTO>(Error.NotFound("Codigo informado invalido!"));
             }
 
             if (codigoLogin.CodigoValido(codigoLoginDTO.Email, codigoLoginDTO.Codigo))
             {
                 var usuario = await _usuarioRepository.GetByEmail(codigoLogin.Email);
-                var tokenAcess = CriarTokenUsuario(usuario);
+                var tokenAcess = _serviceJWT.CriarToken(usuario);
                 var result = new ResultLoginDTO(tokenAcess, usuario.Nome);
-
-                await _codigoLoginRepository.Delete(codigoLogin);
 
                 return Result.Success(result);
             }
 
-            return Result.Failure<ResultLoginDTO>(Error.NotFound("Codigo login informado invalido!"));
+            return Result.Failure<ResultLoginDTO>(Error.NotFound("Codigo informado invalido!"));
         }
         catch (Exception ex)
         {
             return Result.Failure<ResultLoginDTO>(Error.Exception(ex));
         }
-    }
-
-    private string CriarTokenUsuario(Usuario usuario)
-    {
-        return usuario.Nome;
     }
 }

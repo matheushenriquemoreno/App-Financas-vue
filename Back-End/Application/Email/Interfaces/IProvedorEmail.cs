@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Application.Email.Interfaces;
 
-namespace Application.Email.Interfaces
+public interface IProvedorEmail
 {
-    internal class IProvedorEmail
-    {
-    }
+    Task<Result> EnviarEmail(string assunto, string conteudoHTML, string email); 
 }

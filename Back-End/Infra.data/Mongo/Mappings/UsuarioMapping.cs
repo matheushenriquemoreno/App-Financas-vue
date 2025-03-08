@@ -11,6 +11,7 @@ public class UsuarioMapping : IMongoMapping
     {
         BsonClassMap.TryRegisterClassMap<Usuario>(cm =>
         {
+            cm.AutoMap();
             cm.MapMember(x => x.Email).SetIsRequired(true);
             cm.MapMember(x => x.Nome).SetIsRequired(true);
         });

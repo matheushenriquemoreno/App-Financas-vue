@@ -17,7 +17,7 @@ namespace Domain.Login.Entity
             if(EmailValidator.IsValidEmail(email))
 
             Codigo = GerarCodigoAleatorio();
-            DataCriacao = DateTime.Now;
+            DataCriacao = DateTime.UtcNow;
             DataExpiracao = DataCriacao.AddMinutes(MinutosExpiracao);
             Email = email.ToLower();
         }
@@ -46,7 +46,7 @@ namespace Domain.Login.Entity
 
         public bool EstaExpirado()
         {
-            if (DataCriacao > DataExpiracao)
+            if (DateTime.UtcNow > DataExpiracao)
                 return true;
 
             return false;

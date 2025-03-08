@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Apresentation", "4-Aprese
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{A3D8EDFA-29F0-408E-93C7-1733E7D85C10}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra.Data", "Infra.data\Infra.Data.csproj", "{4A337B85-A7C5-41AB-B9E8-3B4F5D79E55D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "Infra.data\Infra.csproj", "{4A337B85-A7C5-41AB-B9E8-3B4F5D79E55D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedDomain", "SharedDomain\SharedDomain.csproj", "{8C104C1D-E8E1-426D-AC91-B169A76966A3}"
 EndProject

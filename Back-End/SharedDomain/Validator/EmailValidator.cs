@@ -10,8 +10,10 @@ RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     public static bool IsValidEmail(string email)
     {
-        if (string.IsNullOrWhiteSpace(email))
-            return false;
+        if (string.IsNullOrWhiteSpace(email)) return false;
+
+        var quantidadeAroba = email.Count(c => c == '@');
+        if (quantidadeAroba != 1) return false;
 
         return EmailRegex.IsMatch(email);
     }

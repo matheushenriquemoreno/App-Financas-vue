@@ -1,6 +1,4 @@
-﻿using Domain.Exceptions;
-using Domain.Validator;
-using SharedDomain.Entity;
+﻿using Domain.Validator;
 using SharedDomain.Validator;
 
 namespace Domain.Entity

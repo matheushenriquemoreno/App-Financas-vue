@@ -29,5 +29,10 @@ namespace Infra.Data.Mongo.Repositorys
                 .Find(x => x.Codigo == codigo)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task DeleteExpirados(string email)
+        {
+            await _entityCollection.DeleteManyAsync(x => x.Email.Equals(email) && x.DataExpiracao < DateTime.UtcNow);
+        }
     }
 }

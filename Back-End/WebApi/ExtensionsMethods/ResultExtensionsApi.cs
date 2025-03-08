@@ -40,6 +40,7 @@ public static class ResultExtensionsApi
         {
             TypeError.Validation => Results.BadRequest(ApiResultError.Create(error)),
             TypeError.NotFound => Results.NotFound(ApiResultError.Create(error)),
+            TypeError.Exception => Results.InternalServerError(ApiResultError.Create(error)),
             _ => throw new Exception("TypeErro invalid")
         };
     }
